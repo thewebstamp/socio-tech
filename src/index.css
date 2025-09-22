@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.josefin {
+  font-family: "Josefin Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+.fredoka {
+  font-family: "Fredoka", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+.gray {
+  background: rgb(184, 184, 184);
+}
+.green {
+  background: rgb(79, 198, 0);
+}
+.cyan-color {
+  color: #079dc2;
+}
+
+/* Chrome, Edge, Safari */
+.scroll-hover::-webkit-scrollbar {
+  width: 18px;
+  transition: opacity 0.3s ease-in-out; /* smooth fade */
+}
+
+/* Start hidden */
+.scroll-hover::-webkit-scrollbar-thumb {
+  background: #989898;
+  border-radius: 4px;
+  opacity: 0; /* hidden by default */
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Show scrollbar on hover */
+.scroll-hover:hover::-webkit-scrollbar-thumb {
+  opacity: 1;
+}
+
+/* Track (transparent) */
+.scroll-hover::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Firefox */
+.scroll-hover {
+  scrollbar-width: auto; /* reserve space */
+  scrollbar-color: transparent transparent; /* hide */
+}
+.scroll-hover:hover {
+  scrollbar-color: #989898 transparent; /* show on hover */
+}
+
+
+/* Hide webskit scroll bar */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Animation */
+@keyframes vfloat {
+  0%   { transform: translateX(-15px) translateY(0); }
+  25%  { transform: translateX(0) translateY(15px); }
+  50%  { transform: translateX(15px) translateY(0); }
+  75%  { transform: translateX(0) translateY(-15px); }
+  100% { transform: translateX(-15px) translateY(0); }
+}
+
+.animate-vfloat {
+  animation: vfloat 17s ease-in-out infinite;
+}
