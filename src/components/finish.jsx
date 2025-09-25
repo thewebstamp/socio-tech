@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useAuthData } from "../context/authContest.jsx";
-import axios from "axios";
+import api from "./lib/axios.jsx";
 
 function Finish({ registeredEmail }) {
     const navigate = useNavigate()
@@ -20,7 +20,7 @@ function Finish({ registeredEmail }) {
     const handleClick = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post("http://localhost:1800/api/auth/finishSignup", values, {
+            const res = await api.post("/auth/finishSignup", values, {
                 withCredentials: true
             });
             if (res.status === 200) {
