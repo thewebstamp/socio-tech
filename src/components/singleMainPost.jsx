@@ -106,7 +106,7 @@ export default function SingleMainPost({ p }) {
         <div onClick={() => { setPostId(p.id) }} className="shadow-lg flex flex-col gap-1 bg-white dark:bg-black pt-4 pb-2 rounded-2xl">
             <div className="flex justify-between items-center px-3">
                 <div className="flex items-center gap-2">
-                    <img src={`http://localhost:1800/uploads/${p.profile_picture}`} className="w-[42px] h-[42px] rounded-full object-cover object-center" alt="" />
+                    <img src={`https://socio-tech-server.onrender.com/uploads/${p.profile_picture}`} className="w-[42px] h-[42px] rounded-full object-cover object-center" alt="" />
                     <span>
                         <p className="font-bold josefin leading-[1.25rem] tracking-[0.15px] text-[18.2px] dark:text-gray-200">{p.name}</p>
                         <p className="josefin leading-[1.2rem] text-gray-600 dark:text-gray-500 text-[15.8px]">{moment(p.created_at).fromNow()}</p>
@@ -139,7 +139,7 @@ export default function SingleMainPost({ p }) {
                 <div ref={scrollerRef} className="w-full max-h-[50vh] overflow-x-hidden scroll-smooth no-scrollbar flex">
                     {
                         images.map((img, i) => (
-                            <img key={i} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd} className="rounded-xl [@media(max-width:685px)]:rounded-[0] object-cover object-center" src={`http://localhost:1800/uploads/${img}`} alt="" />
+                            <img key={i} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd} className="rounded-xl [@media(max-width:685px)]:rounded-[0] object-cover object-center" src={`https://socio-tech-server.onrender.com/uploads/${img}`} alt="" />
                         ))
                     }
                 </div>

@@ -11,7 +11,7 @@ function Dash() {
         <div className="flex flex-col gap-3 josefin">
             <a href='#' onClick={() => {navigate(`profile/${user.id}`)}} className="flex items-center gap-3 pl-7 py-2 bg-white dark:bg-black rounded-2xl shadow-lg cursor-pointer">
                 <div className='relative'>
-                    <img className="w-[35px] h-[35px] object-cover object-center rounded-full" src={`http://localhost:1800/uploads/${user.profile_picture}`} alt="User Image" />
+                    <img className="w-[35px] h-[35px] object-cover object-center rounded-full" src={`https://socio-tech-server.onrender.com/uploads/${user.profile_picture}`} alt="User Image" />
                     <div className="absolute bottom-[0] right-[0] green w-[10px] h-[10px] rounded-full"></div>
                 </div>
                 <div className='flex flex-col justify-center'>

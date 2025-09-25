@@ -52,7 +52,7 @@ export default function Comments({ comments, fetchComment }) {
                     <div className='w-full max-w-[532px] px-[15px] pb-2 sticky top-0 bg-white dark:bg-black'>
                         <X strokeWidth={3} onClick={() => { setShowComment(false); handleShowComment() }} className='cursor-pointer text-red-700 mb-3 mt-3' />
                         <form className='flex gap-3 [@media(max-width:680px)]:gap-2 items-center' onSubmit={handleSubmit}>
-                            <img className='w-[35px] h-[35px] rounded-full object-center object-cover' src={`http://localhost:1800/uploads/${user.profile_picture}`} alt="" />
+                            <img className='w-[35px] h-[35px] rounded-full object-center object-cover' src={`https://socio-tech-server.onrender.com/uploads/${user.profile_picture}`} alt="" />
                             <input className='h-[37px] flex-1 border-2 border-gray-500 px-3 text-[16.5px] [@media(max-width:680px)]:placeholder:text-[16.4px] placeholder-gray-600 dark:placeholder-gray-400 dark:text-gray-100 rounded-md dark:bg-[#2d2d2d]' type="text" placeholder='Make a comment' value={content} onChange={handleChange} />
                             <input className='h-[35px] fredoka bg-blue-500 font-medium tracking-[0.2px] text-white shadow-lg px-4 [@media(max-width:680px)]:px-3 rounded-md' type="submit" value="Send" />
                         </form>
@@ -63,7 +63,7 @@ export default function Comments({ comments, fetchComment }) {
                             comments.map((c) => (
                                 <div key={c.id}>
                                     <div className='flex bg-[#f4f4f47f] dark:bg-[#0f0f0f9d] rounded-xl pt-2 pb-[6px]'>
-                                        <img className='flex-none w-[35px] h-[35px] rounded-full object-center object-cover' src={`http://localhost:1800/uploads/${c.profile_picture}`} alt="" />
+                                        <img className='flex-none w-[35px] h-[35px] rounded-full object-center object-cover' src={`https://socio-tech-server.onrender.com/uploads/${c.profile_picture}`} alt="" />
                                         <div className='josefin flex flex-1 flex-col gap-[1px] text-[18.5px] dark:text-[18.8px] ml-4 [@media(max-width:680px)]:ml-3'>
                                             <span className='font-bold text-[17px] dark:font-semibold leading-[1.3rem] text-gray-900 dark:text-gray-200'>{c.name}</span>
                                             <p className='text-gray-600 text-[17px] dark:text-gray-300 dark:font-light leading-[1.3rem]'>{c.content}</p>

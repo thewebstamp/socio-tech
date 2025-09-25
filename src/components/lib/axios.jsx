@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "http://localhost:1800/api",
+    baseURL: "https://socio-tech-server.onrender.com",
     withCredentials: true
 });
 

@@ -26,7 +26,7 @@ export function AuthData({ children }) {
 
     const logout = async () => {
         try {
-            await axios.post("http://localhost:1800/api/auth/logout", {}, {withCredentials: true});
+            await axios.post("https://socio-tech-server.onrender.com/api/auth/logout", {}, {withCredentials: true});
             setUser(null);
         } catch (error) {
             console.log(error);

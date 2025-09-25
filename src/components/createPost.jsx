@@ -68,7 +68,7 @@ function CreatePost({ fetchPosts }) {
             <div ref={createPostRef} className='josefin bg-white px-4 pb-7 [@media(max-width:680px)]:pb-10 w-full max-w-[550px] max-h-[70vh] [@media(max-width:680px)]:max-h-[80vh] overflow-y-auto bg-white dark:bg-black shadow-xl rounded-xl'>
                 <X strokeWidth={3} onClick={() => { setShowPost(false); handleCreatePost() }} className='cursor-pointer text-red-700 dark:text-red-600 mb-3 mt-3' />
                 <div className='flex gap-3 items-center'>
-                    <img className='w-[40px] h-[40px] rounded-full' src={`http://localhost:1800/uploads/${user.profile_picture}`} alt="" />
+                    <img className='w-[40px] h-[40px] rounded-full' src={`https://socio-tech-server.onrender.com/uploads/${user.profile_picture}`} alt="" />
                     <span>
                         <p className='fredoka text-[17px] text-gray-900 dark:text-gray-200 font-semibold dark:font-medium'>{user.name}</p>
                         <p className='font-normal dark:font-light text-gray-500 dark:text-gray-300 text-[16.5px]'>@{user.username}</p>

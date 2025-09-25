@@ -301,7 +301,7 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                                 >
                                     <img
                                         className="absolute z-10 w-[30px] h-[30px] border-2 border-blue-400 rounded-full left-3 top-3"
-                                        src={`http://localhost:1800/uploads/${g.profile_picture}`}
+                                        src={`https://socio-tech-server.onrender.com/uploads/${g.profile_picture}`}
                                         alt={`${g.name} avatar`}
                                     />
                                     <span className="absolute w-full bottom-2 left-0 pl-2 text-white text-[15.5px] drop-shadow bg-[#00000025] pr-3">
@@ -309,7 +309,7 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                                     </span>
                                     <img
                                         className="w-full h-full object-cover"
-                                        src={`http://localhost:1800/uploads/${g.items[0].image}`}
+                                        src={`https://socio-tech-server.onrender.com/uploads/${g.items[0].image}`}
                                         alt={`${g.name} status`}
                                     />
                                     {g.items.length > 1 && (
