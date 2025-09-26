@@ -4,6 +4,7 @@ import Finish from "./finish";
 import api from './lib/axios.jsx';
 
 function Signup({ func1, cancel }) {
+    const [loading, setLoading] = useState(fales);
     const [proceed, setProceed] = useState(false); //This should be set to true after a successful api req
     const [registeredEmail, setRegisterdEmail] = useState(null); //use axios to set this
     const [values, setValues] = useState({
@@ -17,6 +18,7 @@ function Signup({ func1, cancel }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         try {
             const response = await api.post("/auth/beginSignup", values);
@@ -28,6 +30,8 @@ function Signup({ func1, cancel }) {
 
         } catch (error) {
             setErrorMsg(error.response.data.error)
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -43,7 +47,15 @@ function Signup({ func1, cancel }) {
                             <input className="border-none outline-none bg-gray-200 placeholder-gray-500 text-black text-[20px] px-4 py-1 rounded-xl" type="password" name="password" placeholder="Create Password" onChange={handleChange} required />
                         </div>
                         <div>
-                            <input className="rounded-xl text-black text-[19px] cursor-pointer shadow-xl font-semibold py-2 w-full bg-cyan-600" type="submit" value="Create Account" />
+                            <button className="rounded-xl text-black text-[19px] cursor-pointer shadow-xl font-semibold py-2 w-full bg-cyan-600" type="submit">
+                                {
+                                    loading? (
+                                        <div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+                                    ) : (
+                                        "Create Account"
+                                    )
+                                }
+                            </button>
                             {errorMsg && <p className="text-[#c89900] text-[17px] mt-2">{errorMsg}</p>}
                             <p className="text-gray-300 font-light text-[19px] my-2">
                                 Already have an account?

@@ -88,6 +88,7 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
         if (!image || image.length === 0) return setUploadError("Please choose an image.");
         const fd = new FormData();
         fd.append("image", image[0]);
+        setLoading(true);
 
         try {
             await api.post("/status", fd, {
@@ -100,6 +101,8 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
         } catch (err) {
             console.error(err);
             setUploadError(err.response?.data?.error || "Upload failed");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -278,11 +281,19 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                             {image.length > 0 && (
                                 <div className="flex justify-center items-center fixed z-30 w-full h-screen bg-[#dcdcdcd6] dark:bg-[#323232cd] left-0 top-0">
                                     <div className="josefin relative h-[80%] pb-5 pt-10 w-full max-w-[400px] bg-gray-100 dark:bg-black shadow-xl rounded-lg flex gap-4 flex-col items-center justify-between">
-                                        <X strokeWidth={3} className="cursor-pointer absolute top-2 text-red-700 dark:text-red-600" onClick={() => setImage([])} />
+                                        <X strokeWidth={3} className="cursor-pointer absolute top-2 text-red-700 dark:text-red-600" onClick={() => {setImage([]); setUploadError(null)}} />
                                         <img src={URL.createObjectURL(image[0])} alt="preview" className="w-[90%] h-[80%] object-contain rounded-md" />
                                         <div className="w-full px-[7%] flex items-center justify-between">
-                                            <input type="submit" value="SHARE" className="h-[fit-content] cursor-pointer shadow-xl fredoka rounded-lg px-5 py-[5px] font-medium tracking-[0.3px] text-white bg-[#099ec3]" />
-                                            <button type="button" className="text-lg text-gray-600 dark:text-gray-400" onClick={() => setImage([])}>Cancel</button>
+                                            <button type="submit" className="h-[fit-content] cursor-pointer shadow-xl fredoka rounded-lg px-5 py-[5px] font-medium tracking-[0.3px] text-white bg-[#099ec3]">
+                                                {
+                                                    loading ? (
+                                                        <div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+                                                    ) : (
+                                                        "SHARE"
+                                                    )
+                                                }
+                                            </button>
+                                            <button type="button" className="text-lg text-gray-600 dark:text-gray-400" onClick={() => {setImage([]); setUploadError(null)}}>Cancel</button>
                                         </div>
                                         {uploadError && <p className="text-red-600 mt-2">{uploadError}</p>}
                                     </div>
@@ -365,7 +376,7 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                         onTouchEnd={() => setIsPaused(false)}
                     >
                         <img
-                            src={`http://localhost:1800/uploads/${viewerItems[viewerIndex].image}`}
+                            src={`https://socio-tech-server.onrender.com/uploads/${viewerItems[viewerIndex].image}`}
                             alt=""
                             className="w-full h-full object-contain rounded-md"
                         />

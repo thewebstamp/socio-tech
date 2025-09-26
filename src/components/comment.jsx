@@ -6,6 +6,7 @@ import moment from 'moment';
 import api from './lib/axios.jsx';
 
 export default function Comments({ comments, fetchComment }) {
+    const [loading, setLoading] = useState(false);
     const { user, postId } = useAuthData();
     const { setShowComment, handleShowComment } = useUtilData();
 
@@ -33,6 +34,7 @@ export default function Comments({ comments, fetchComment }) {
     // Make comment
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             await api.post("/createComment", { content, post_id: postId }, {
                 withCredentials: true
@@ -42,6 +44,8 @@ export default function Comments({ comments, fetchComment }) {
 
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -54,7 +58,15 @@ export default function Comments({ comments, fetchComment }) {
                         <form className='flex gap-3 [@media(max-width:680px)]:gap-2 items-center' onSubmit={handleSubmit}>
                             <img className='w-[35px] h-[35px] rounded-full object-center object-cover' src={`https://socio-tech-server.onrender.com/uploads/${user.profile_picture}`} alt="" />
                             <input className='h-[37px] flex-1 border-2 border-gray-500 px-3 text-[16.5px] [@media(max-width:680px)]:placeholder:text-[16.4px] placeholder-gray-600 dark:placeholder-gray-400 dark:text-gray-100 rounded-md dark:bg-[#2d2d2d]' type="text" placeholder='Make a comment' value={content} onChange={handleChange} />
-                            <input className='h-[35px] fredoka bg-blue-500 font-medium tracking-[0.2px] text-white shadow-lg px-4 [@media(max-width:680px)]:px-3 rounded-md' type="submit" value="Send" />
+                            <button className='h-[35px] fredoka bg-blue-500 font-medium tracking-[0.2px] text-white shadow-lg px-4 [@media(max-width:680px)]:px-3 rounded-md' type="submit">
+                                {
+                                    loading ? (
+                                        <div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+                                    ) : (
+                                        "Send"
+                                    )
+                                }
+                            </button>
                         </form>
                     </div>
 

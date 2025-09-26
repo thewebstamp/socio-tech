@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useUtilData } from '../context/utilContext.jsx';
 
 function CreatePost({ fetchPosts }) {
+    const [loading, setLoading] = useState(false);
     const { user } = useAuthData();
     const [content, setContent] = useState("");
     const [images, setImages] = useState([]);
@@ -27,6 +28,7 @@ function CreatePost({ fetchPosts }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const formData = new FormData();
             formData.append("content", content);
@@ -47,6 +49,8 @@ function CreatePost({ fetchPosts }) {
             setImages([]);
         } catch (err) {
             setError(err.response?.data?.error || "Something went wrong");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -97,7 +101,15 @@ function CreatePost({ fetchPosts }) {
                                 ))}
                             </div>
                         </div>
-                        <input className='h-[fit-content] cursor-pointer shadow-xl fredoka rounded-lg px-5 py-[5px] font-medium tracking-[0.3px] text-white bg-[#099ec3]' type="submit" value="POST" />
+                        <button className='h-[fit-content] cursor-pointer shadow-xl fredoka rounded-lg px-5 py-[5px] font-medium tracking-[0.3px] text-white bg-[#099ec3]' type="submit">
+                            {
+                                loading ? (
+                                    <div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+                                ) : (
+                                    "POST"
+                                )
+                            }
+                        </button>
                     </div>
                     {error && <p>{error}</p>}
                 </form>

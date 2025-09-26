@@ -6,6 +6,7 @@ import api from "./lib/axios.jsx";
 import { GoogleLogin } from "@react-oauth/google";
 
 function Login({ func2, cancel }) {
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const [errorMsg, setErrorMsg] = useState("");
     const [values, setValues] = useState({
@@ -20,6 +21,7 @@ function Login({ func2, cancel }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const res = await api.post("/auth/login", values, { withCredentials: true });
             if (res.status === 200) {
@@ -29,6 +31,8 @@ function Login({ func2, cancel }) {
             }
         } catch (error) {
             setErrorMsg(error.response.data.error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -47,7 +51,15 @@ function Login({ func2, cancel }) {
                     </div>
 
                     <div>
-                        <input className="rounded-xl text-black text-[19px] cursor-pointer shadow-xl font-semibold py-2 w-full bg-cyan-600" type="submit" value="Login" />
+                        <button className="rounded-xl text-black text-[19px] cursor-pointer shadow-xl font-semibold py-2 w-full bg-cyan-600" type="submit">
+                            {
+                                loading? (
+                                    <div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+                                ) : (
+                                    "Login"
+                                )
+                            }
+                        </button>
                         {errorMsg && <p className="text-[#c89900] text-[17px] mt-2">{errorMsg}</p>}
                         <p className="text-gray-300 font-light text-[19px] my-2">
                             Don't have an account?

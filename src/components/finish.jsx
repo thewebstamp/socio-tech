@@ -4,6 +4,7 @@ import { useAuthData } from "../context/authContest.jsx";
 import api from "./lib/axios.jsx";
 
 function Finish({ registeredEmail }) {
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate()
     const [err, setErr] = useState(null);
     const [values, setValues] = useState({
@@ -19,6 +20,7 @@ function Finish({ registeredEmail }) {
 
     const handleClick = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const res = await api.post("/auth/finishSignup", values, {
                 withCredentials: true
@@ -31,6 +33,8 @@ function Finish({ registeredEmail }) {
             }
         } catch (error) {
             setErr(error.response.data.error)
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -43,7 +47,15 @@ function Finish({ registeredEmail }) {
                         <input className="border-none bg-gray-200 outline-none placeholder-gray-500 text-black text-[20px] font-normal px-4 py-1 rounded-xl" type="text" name="fullname" placeholder="Enter Full Name" onChange={handleChange} required />
                         <input className="border-none bg-gray-200 outline-none placeholder-gray-500 text-black text-[20px] font-normal px-4 py-1 rounded-xl" type="text" name="username" placeholder="Create Username" onChange={handleChange} required />
                     </div>
-                    <input className="rounded-xl text-gray-100 text-[19px] cursor-pointer shadow-xl font-semibold py-2 w-full bg-cyan-600" type="submit" value="Finish" />
+                    <button className="rounded-xl text-gray-100 text-[19px] cursor-pointer shadow-xl font-semibold py-2 w-full bg-cyan-600" type="submit">
+                        {
+                            loading? (
+                                <div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+                            ) : (
+                                "Finish"
+                            )
+                        }
+                    </button>
                     {err && <p>{err}</p>}
                 </form>
             </div>
