@@ -2,11 +2,8 @@ import { X, LogOut, Users, Calendar, MonitorPlay, BarChart3, Globe, Settings, Ha
 import { useUtilData } from "../../context/utilContext.jsx";
 import { useAuthData } from "../../context/authContest.jsx";
 import { useNavigate } from "react-router-dom";
-import api from "../lib/axios.jsx";
-import { useState } from "react";
 
 function NavPopSC() {
-    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { switschSDash } = useUtilData();
 
@@ -61,20 +58,7 @@ function NavPopSC() {
     ];
 
     // -------
-    const { user, setUser } = useAuthData();
-
-    // Logout User
-    const logout = async () => {
-        setLoading(true);
-        try {
-            await api.post("/auth/logout", {}, { withCredentials: true });
-            setUser(null);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const { user, logout } = useAuthData();
 
     return (
         <div className="josefin relative w-screen max-w-[585px] h-screen overflow-y-auto bg-gray-200 dark:bg-[#212121] shadow-lg">
@@ -92,16 +76,10 @@ function NavPopSC() {
                         <span className="font-semibold fredoka text-[17.5px] tracking-[1px]">See My Profile</span>
                     </a>
                     <hr className="border-none h-[1px] bg-gray-500" />
-                    <div onClick={() => { switschSDash(); logout() }} className="w-[fit-content] flex items-center gap-3 py-2 rounded-2xl text-gray-300 cursor-pointer">
+                    <div onClick={() => { logout(); switschSDash() }} className="w-[fit-content] flex items-center gap-3 py-2 rounded-2xl text-gray-300 cursor-pointer">
                         <LogOut strokeWidth={2.2} />
                         <span className="font-semibold dark:font-semibold text-[18.5px]">
-                            {
-                                loading ? (
-                                    <div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-                                ) : (
-                                    "Logout"
-                                )
-                            }
+                            Logout
                         </span>
                     </div>
                 </div>
