@@ -77,9 +77,9 @@ function NavPopSC() {
     };
 
     return (
-        <div className="josefin relative w-screen max-w-[585px] h-screen overflow-y-scroll bg-gray-200 dark:bg-[#212121] shadow-lg">
+        <div className="josefin relative w-screen max-w-[585px] h-screen overflow-y-auto bg-gray-200 dark:bg-[#212121] shadow-lg">
             <div className="flex flex-col gap-3">
-                <div className="sticky z-30 top-[0px] flex flex-col gap-1 bg-[#07274e] dark:bg-black border-b-4  dark:border-b-[#1d1d1d] px-12 pt-[45px] pb-4">
+                <div className="sticky z-30 top-[0px] flex flex-col gap-1 bg-[#07274e] dark:bg-black border-b-4  dark:border-b-[#1d1d1d] px-12 pt-[43px] pb-4">
                     <div className="absolute top-5 right-5  flex gap-1 fredoka items-center font-medium text-[19.5px]" onClick={switschSDash}>
                         <X strokeWidth={2.5} className="text-white" />
                     </div>

@@ -32,8 +32,8 @@ function Start() {
                 {
                     displayStatus === "" ?
                         <div className="relative z-10 px-10 pt-10 bg-[#01184A]">
-                            <h1 className="fredoka tracking-wider font-semibold text-4xl text-gray-100">Socio<span className="text-cyan-500">Tech</span></h1>
-                            <p className="leading-snug text-[16.5px] text-gray-300 pt-2 pb-2">Where tech and creative minds meet to connect, collaborate, and grow.</p>
+                            <h1 className="fredoka tracking-wider font-semibold text-[38px] text-gray-100">Socio<span className="text-cyan-500">Tech</span></h1>
+                            <p className="leading-snug text-[17px] text-gray-300 pt-2 pb-2">Where tech and creative minds meet to connect, collaborate, and grow.</p>
                         </div>
                         : <div></div>
                 }

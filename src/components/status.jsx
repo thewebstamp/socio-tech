@@ -8,6 +8,7 @@ import { useAuthData } from "../context/authContest.jsx";
 import CreatePost from "./createPost.jsx"
 
 export default function Status({ fetchPosts, status = [], fetchStatus }) {
+    const [loading, setLoading] = useState(false);
     const { user } = useAuthData();
     const scrollerRef = useRef(null);
     const [showScrollerArrows, setShowScrollerArrows] = useState(false);
@@ -284,7 +285,7 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                                         <X strokeWidth={3} className="cursor-pointer absolute top-2 text-red-700 dark:text-red-600" onClick={() => {setImage([]); setUploadError(null)}} />
                                         <img src={URL.createObjectURL(image[0])} alt="preview" className="w-[90%] h-[80%] object-contain rounded-md" />
                                         <div className="w-full px-[7%] flex items-center justify-between">
-                                            <button type="submit" className="h-[fit-content] cursor-pointer shadow-xl fredoka rounded-lg px-5 py-[5px] font-medium tracking-[0.3px] text-white bg-[#099ec3]">
+                                            <button type="submit" className="flex justify-center items-center h-[fit-content] cursor-pointer shadow-xl fredoka rounded-lg px-5 py-[5px] font-medium tracking-[0.3px] text-white bg-[#099ec3]">
                                                 {
                                                     loading ? (
                                                         <div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -340,7 +341,7 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                 showPost
                     ? <CreatePost fetchPosts={fetchPosts} />
                     : <div onClick={() => { setShowPost(true); handleCreatePost() }} className="flex gap-5 [@media(max-width:1000px)]:gap-4 [@media(max-width:685px)]:!gap-2 items-center bg-white dark:bg-black px-3 py-2 rounded-2xl shadow-lg mt-4 [@media(max-width:1000px)]:mt-3 [@media(max-width:1000px)]:!py-[7px] border-[1px] border-gray-300 dark:border-gray-900">
-                        <img className="cursor-pointer w-[42px] h-[42px] [@media(max-width:1000px)]:w-[35px] [@media(max-width:1000px)]:h-[35px] rounded-full" src={`http://localhost:1800/uploads/${user.profile_picture}`} alt="" />
+                        <img className="cursor-pointer w-[42px] h-[42px] [@media(max-width:1000px)]:w-[35px] [@media(max-width:1000px)]:h-[35px] rounded-full" src={`https://socio-tech-server.onrender.com/uploads/${user.profile_picture}`} alt="" />
                         <span className="cursor-pointer h-[40px] [@media(max-width:1000px)]:h-[33px] flex flex-1 items-center fredoka pl-5 bg-gray-200 dark:bg-[#2c2c2c] dark:text-gray-300 tracking-[0.2px] text-gray-800 text-[17px] rounded-2xl">Create a Post</span>
                         <ImagesIcon className="cursor-pointer w-[30px] h-[30px] [@media(max-width:1000px)]:w-[25px] [@media(max-width:1000px)]:h-[25px] cyan-color" />
                     </div>

@@ -39,7 +39,7 @@ function Finish({ registeredEmail }) {
     };
 
     return (
-        <div className="relative rounded-tl-2xl rounded-tr-2xl border z-10 bg-[#07274e] pt-5 pb-7">
+        <div className="relative rounded-tl-2xl rounded-tr-2xl border-t-2 z-10 bg-[#07274e] pt-5 pb-7">
             <div>
                 <h3 className="fredoka font-semibold tracking-[0.2px] text-[#c89900] text-xl">Finish Signup</h3>
                 <form className="px-9" onSubmit={handleClick}>
@@ -47,7 +47,7 @@ function Finish({ registeredEmail }) {
                         <input className="border-none bg-gray-200 outline-none placeholder-gray-500 text-black text-[20px] font-normal px-4 py-1 rounded-xl" type="text" name="fullname" placeholder="Enter Full Name" onChange={handleChange} required />
                         <input className="border-none bg-gray-200 outline-none placeholder-gray-500 text-black text-[20px] font-normal px-4 py-1 rounded-xl" type="text" name="username" placeholder="Create Username" onChange={handleChange} required />
                     </div>
-                    <button className="rounded-xl text-gray-100 text-[19px] cursor-pointer shadow-xl font-semibold py-2 w-full bg-cyan-600" type="submit">
+                    <button className="flex justify-center items-center rounded-xl text-gray-100 text-[19px] cursor-pointer shadow-xl font-semibold py-2 w-full bg-cyan-600" type="submit">
                         {
                             loading? (
                                 <div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>

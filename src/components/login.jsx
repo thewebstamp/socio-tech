@@ -37,7 +37,7 @@ function Login({ func2, cancel }) {
     };
 
     return (
-        <div className="relative rounded-tl-2xl rounded-tr-2xl border-2 z-10 bg-[#07274e] pt-5 pb-7">
+        <div className="relative rounded-tl-2xl rounded-tr-2xl border-t-2 z-10 bg-[#07274e] pt-5 pb-7">
             <div>
                 <X className="cursor-pointer absolute left-3 text-white" onClick={cancel} />
                 <h2 className="josefin font-bold text-gray-100 text-2xl">Login</h2>
@@ -51,7 +51,7 @@ function Login({ func2, cancel }) {
                     </div>
 
                     <div>
-                        <button className="rounded-xl text-black text-[19px] cursor-pointer shadow-xl font-semibold py-2 w-full bg-cyan-600" type="submit">
+                        <button className="flex justify-center items-center rounded-xl text-black text-[19px] cursor-pointer shadow-xl font-semibold py-2 w-full bg-cyan-600" type="submit">
                             {
                                 loading? (
                                     <div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>

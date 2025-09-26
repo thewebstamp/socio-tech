@@ -4,7 +4,7 @@ import Finish from "./finish";
 import api from './lib/axios.jsx';
 
 function Signup({ func1, cancel }) {
-    const [loading, setLoading] = useState(fales);
+    const [loading, setLoading] = useState(false);
     const [proceed, setProceed] = useState(false); //This should be set to true after a successful api req
     const [registeredEmail, setRegisterdEmail] = useState(null); //use axios to set this
     const [values, setValues] = useState({
@@ -37,7 +37,7 @@ function Signup({ func1, cancel }) {
 
     return (
         proceed ? <Finish registeredEmail={registeredEmail} /> //registered email is email that was sent as response to beginSignup from server
-            : <div className="relative rounded-tl-2xl rounded-tr-2xl border-2 z-10 bg-[#07274e] pt-5 pb-7">
+            : <div className="relative rounded-tl-2xl rounded-tr-2xl border-t-2 z-10 bg-[#07274e] pt-5 pb-7">
                 <div>
                     <X className="cursor-pointer absolute left-3 text-white" onClick={cancel} />
                     <h2 className="josefin font-bold text-[#c89900] text-2xl">Signup</h2>
@@ -47,7 +47,7 @@ function Signup({ func1, cancel }) {
                             <input className="border-none outline-none bg-gray-200 placeholder-gray-500 text-black text-[20px] px-4 py-1 rounded-xl" type="password" name="password" placeholder="Create Password" onChange={handleChange} required />
                         </div>
                         <div>
-                            <button className="rounded-xl text-black text-[19px] cursor-pointer shadow-xl font-semibold py-2 w-full bg-cyan-600" type="submit">
+                            <button className="flex justify-center items-center rounded-xl text-black text-[19px] cursor-pointer shadow-xl font-semibold py-2 w-full bg-cyan-600" type="submit">
                                 {
                                     loading? (
                                         <div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
