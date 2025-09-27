@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuthData } from '../context/authContest.jsx';
 import { X, ImagesIcon } from 'lucide-react';
-import axios from 'axios';
+import api from './lib/axios.jsx';
 import { useUtilData } from '../context/utilContext.jsx';
 
 function CreatePost({ fetchPosts }) {
@@ -37,7 +37,7 @@ function CreatePost({ fetchPosts }) {
                 formData.append("images", img);
             });
 
-            await axios.post("http://localhost:1800/api/posts", formData, {
+            await api.post("/posts", formData, {
                 withCredentials: true,
                 headers: { "Content-Type": "multipart/form-data" },
             });
