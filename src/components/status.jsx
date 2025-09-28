@@ -33,14 +33,10 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
         if (!Array.isArray(status)) return [];
 
         const map = new Map();
+
         status.forEach((s) => {
-            // ✅ robust extraction of userId
-            const uid =
-                s.userId?.toString() ||
-                s.user_id?.toString() ||
-                s.user?._id?.toString() ||
-                s.user?.id?.toString() ||
-                "unknown_user";
+            const uid = s.userId?.toString(); // ✅ always provided by backend
+            if (!uid) return;
 
             if (!map.has(uid)) map.set(uid, []);
             map.get(uid).push(s);
@@ -51,19 +47,8 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
             const first = arr[0] || {};
             return {
                 userId: uid,
-                name:
-                    first.name ??
-                    first.full_name ??
-                    first.username ??
-                    first.user?.name ??
-                    first.user?.username ??
-                    "Unknown",
-                profile_picture:
-                    first.profile_picture ??
-                    first.avatar ??
-                    first.user?.profile_picture ??
-                    first.user?.avatar ??
-                    Images.welcome,
+                name: first.name ?? "Unknown",
+                profile_picture: first.profile_picture ?? Images.welcome,
                 items: arr,
             };
         });
