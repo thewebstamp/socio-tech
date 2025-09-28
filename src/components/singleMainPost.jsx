@@ -104,8 +104,7 @@ export default function SingleMainPost({ p }) {
     }, [p.id])
 
     return (
-        /* CHANGED: removed onClick from root div so clicks inside don't always set postId */
-        <div className="shadow-lg flex flex-col gap-1 bg-white dark:bg-black pt-4 pb-2 rounded-2xl">
+        <div onClick={() => {setPostId(p.id)}} className="shadow-lg flex flex-col gap-1 bg-white dark:bg-black pt-4 pb-2 rounded-2xl">
             <div className="flex justify-between items-center px-3">
                 <div className="flex items-center gap-2">
                     <img src={`${p.profile_picture}`} className="w-[42px] h-[42px] rounded-full object-cover object-center" alt="" />

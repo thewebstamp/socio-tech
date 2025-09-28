@@ -30,29 +30,41 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
     // Group statuses by user so each user occupies a single card
     // --------------------
     const grouped = useMemo(() => {
-        // Defensive: ensure `status` is an array
         if (!Array.isArray(status)) return [];
 
         const map = new Map();
         status.forEach((s) => {
-            // CHANGED: normalize user id field to avoid `undefined` keys
-            // If backend uses userId, user_id, or nested user object, handle them.
-            const uid = (s.userId ?? s.user_id ?? s.user?.id ?? s.userId)?.toString() ?? 'unknown_user';
+            // ✅ robust extraction of userId
+            const uid =
+                s.userId?.toString() ||
+                s.user_id?.toString() ||
+                s.user?._id?.toString() ||
+                s.user?.id?.toString() ||
+                "unknown_user";
 
             if (!map.has(uid)) map.set(uid, []);
             map.get(uid).push(s);
         });
 
-        // produce an array with most recent first per user
-        return Array.from(map.values()).map((arr) => {
+        return Array.from(map.entries()).map(([uid, arr]) => {
             arr.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-            // CHANGED: provide safe fallbacks for name/profile picture keys
             const first = arr[0] || {};
             return {
-                userId: (first.userId ?? first.user_id ?? first.user?.id ?? first.userId)?.toString() ?? 'unknown_user',
-                name: first.name ?? first.full_name ?? first.username ?? 'Unknown',
-                profile_picture: first.profile_picture ?? first.avatar ?? Images.welcome,
-                items: arr, // sorted newest -> oldest
+                userId: uid,
+                name:
+                    first.name ??
+                    first.full_name ??
+                    first.username ??
+                    first.user?.name ??
+                    first.user?.username ??
+                    "Unknown",
+                profile_picture:
+                    first.profile_picture ??
+                    first.avatar ??
+                    first.user?.profile_picture ??
+                    first.user?.avatar ??
+                    Images.welcome,
+                items: arr,
             };
         });
     }, [status]);
@@ -303,7 +315,7 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                             {image.length > 0 && (
                                 <div className="flex justify-center items-center fixed z-30 w-full h-screen bg-[#dcdcdcd6] dark:bg-[#323232cd] left-0 top-0">
                                     <div className="josefin relative h-[80%] pb-5 pt-10 w-full max-w-[400px] bg-gray-100 dark:bg-black shadow-xl rounded-lg flex gap-4 flex-col items-center justify-between">
-                                        <X strokeWidth={3} className="cursor-pointer absolute top-2 text-red-700 dark:text-red-600" onClick={() => {setImage([]); setUploadError(null)}} />
+                                        <X strokeWidth={3} className="cursor-pointer absolute top-2 text-red-700 dark:text-red-600" onClick={() => { setImage([]); setUploadError(null) }} />
                                         <img src={URL.createObjectURL(image[0])} alt="preview" className="w-[90%] h-[80%] object-contain rounded-md" />
                                         <div className="w-full px-[7%] flex items-center justify-between">
                                             <button type="submit" className="flex justify-center items-center h-[fit-content] cursor-pointer shadow-xl fredoka rounded-lg px-5 py-[5px] font-medium tracking-[0.3px] text-white bg-[#099ec3]">
@@ -315,7 +327,7 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                                                     )
                                                 }
                                             </button>
-                                            <button type="button" className="text-lg text-gray-600 dark:text-gray-400" onClick={() => {setImage([]); setUploadError(null)}}>Cancel</button>
+                                            <button type="button" className="text-lg text-gray-600 dark:text-gray-400" onClick={() => { setImage([]); setUploadError(null) }}>Cancel</button>
                                         </div>
                                         {uploadError && <p className="text-red-600 mt-2">{uploadError}</p>}
                                     </div>
