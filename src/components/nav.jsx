@@ -132,7 +132,7 @@ function Nav() {
                         <div className="hidden absolute top-[-10px] right-[-10px] w-[20px] h-[20px] font-semibold text-[14px] tracking-wide rounded-full flex justify-center items-center bg-[#ec2c2c] fredoka text-white">1</div>
                     </a>
                     <div className="relative cursor-pointer" onClick={switschSDash}>
-                        <img className="w-[37px] h-[37px] object-cover object-center rounded-full" src={`https://socio-tech-server.onrender.com/uploads/${user.profile_picture}`} alt="Profile Image" />
+                        <img className="w-[37px] h-[37px] object-cover object-center rounded-full" src={`${user.profile_picture}`} alt="Profile Image" />
                         <div className="absolute bottom-[0] right-[0] green w-[10px] h-[10px] rounded-full"></div>
                     </div>
                     {
