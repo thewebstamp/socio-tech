@@ -74,7 +74,7 @@ function Login({ func2, cancel }) {
                     </div>
                 </form>
 
-                <div className="text-gray-400 flex flex-col gap-2 mt-2 px-9">
+                <div className="text-gray-400 flex justify-center mt-2 px-9">
                     <GoogleLogin
                         onSuccess={
                             async (credentialResponse) => {

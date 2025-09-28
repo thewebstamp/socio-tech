@@ -39,8 +39,8 @@ export default function Comments({ comments, fetchComment }) {
             await api.post("/createComment", { content, post_id: postId }, {
                 withCredentials: true
             });
+            await fetchComment();
             setContent("");
-            fetchComment();
 
         } catch (error) {
             console.log(error);

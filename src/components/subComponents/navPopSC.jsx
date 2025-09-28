@@ -87,7 +87,7 @@ function NavPopSC() {
                 <div className="grid grid-cols-[1fr_1fr] gap-3 mt-5 px-7 pb-6">
                     {
                         dashData.map((data) => (
-                            <div key={data.id} className="flex flex-col gap-2 cursor-pointer bg-[#00000018] dark:bg-[#000000bc] rounded-2xl px-7 py-4">
+                            <div onClick={() => {window.alert("This is just a demo")}} key={data.id} className="flex flex-col gap-2 cursor-pointer bg-[#00000018] dark:bg-[#000000bc] rounded-2xl px-7 py-4">
                                 <span className="relative">
                                     {data.icon}
                                     {

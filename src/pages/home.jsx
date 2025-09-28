@@ -59,8 +59,8 @@ function Home() {
     };
 
     useEffect(() => {
-        if (postId) { fetchComment(); }
-    }, [postId]);
+        fetchComment();
+        }, []);
 
     return (
         <div className="min-h-[calc(100vh-70px)] [@media(max-width:685px)]:min-h-[calc(100vh-105px)]">
