@@ -55,10 +55,10 @@ export default function Comments({ comments, fetchComment }) {
                 <div className='relative'>
                     <div className='w-full max-w-[532px] px-[15px] pb-2 sticky top-0 bg-white dark:bg-black'>
                         <X strokeWidth={3} onClick={() => { setShowComment(false); handleShowComment() }} className='cursor-pointer text-red-700 mb-3 mt-3' />
-                        <form className='flex gap-3 [@media(max-width:680px)]:gap-2 items-center' onSubmit={handleSubmit}>
+                        <form className='flex flex-nowrap gap-3 [@media(max-width:680px)]:gap-2 items-center' onSubmit={handleSubmit}>
                             <img className='w-[35px] h-[35px] rounded-full object-center object-cover' src={`${user.profile_picture}`} alt="" />
-                            <input className='h-[37px] flex-1 border-2 border-gray-500 px-3 text-[16.5px] [@media(max-width:680px)]:placeholder:text-[16.4px] placeholder-gray-600 dark:placeholder-gray-400 dark:text-gray-100 rounded-md dark:bg-[#2d2d2d]' type="text" placeholder='Make a comment' value={content} onChange={handleChange} />
-                            <button className='flex justify-center items-center h-[35px] fredoka bg-blue-500 font-medium tracking-[0.2px] text-white shadow-lg px-4 [@media(max-width:680px)]:px-3 rounded-md' type="submit">
+                            <input className='h-[37px] min-w-0 flex-1 border-2 border-gray-500 px-3 text-[16.5px] [@media(max-width:680px)]:placeholder:text-[16.4px] placeholder-gray-600 dark:placeholder-gray-400 dark:text-gray-100 rounded-md dark:bg-[#2d2d2d]' type="text" placeholder='Make a comment' value={content} onChange={handleChange} />
+                            <button className='flex justify-center items-center h-[35px] fredoka bg-blue-500 font-medium tracking-[0.2px] text-white shadow-lg px-4 [@media(max-width:680px)]:px-3 rounded-md shrink-0' type="submit">
                                 {
                                     loading ? (
                                         <div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
