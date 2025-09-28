@@ -104,7 +104,8 @@ export default function SingleMainPost({ p }) {
     }, [p.id])
 
     return (
-        <div onClick={() => { setPostId(p.id) }} className="shadow-lg flex flex-col gap-1 bg-white dark:bg-black pt-4 pb-2 rounded-2xl">
+        /* CHANGED: removed onClick from root div so clicks inside don't always set postId */
+        <div className="shadow-lg flex flex-col gap-1 bg-white dark:bg-black pt-4 pb-2 rounded-2xl">
             <div className="flex justify-between items-center px-3">
                 <div className="flex items-center gap-2">
                     <img src={`${p.profile_picture}`} className="w-[42px] h-[42px] rounded-full object-cover object-center" alt="" />
@@ -167,10 +168,21 @@ export default function SingleMainPost({ p }) {
                             <Heart onClick={handleLikePost} strokeWidth={2.8} className={`w-[22px] h-[22px] cursor-pointer ${heart ? 'text-red-500' : 'cyan-color'}`} />
                             <p className="fredoka">{postLikes.length}</p>
                         </span>
-                        <span className="flex flex-col justify-center items-center" onClick={() => { setPostId(p.id); setShowComment(true) }}>
-                            <MessageCircle strokeWidth={2.8} onClick={handleShowComment} className="w-[22px] h-[22px] cursor-pointer cyan-color" />
+
+                        {/* CHANGED: set postId and open comments only when comment area is clicked.
+                          Removed the MessageCircle's own onClick to avoid toggling showComment twice. */}
+                        <span
+                            className="flex flex-col justify-center items-center"
+                            onClick={() => {
+                                setPostId(p.id);                 /* CHANGED: set selected post id */
+                                setShowComment(true);            /* CHANGED: show comments overlay */
+                                handleShowComment();             /* CHANGED: apply body overflow lock */
+                            }}
+                        >
+                            <MessageCircle strokeWidth={2.8} className="w-[22px] h-[22px] cursor-pointer cyan-color" />
                             <p className="fredoka">{p.comment_count}</p>
                         </span>
+
                         <span className="flex flex-col justify-center items-center">
                             <Share2 strokeWidth={2.8} className="w-[22px] h-[22px] cursor-pointer cyan-color" />
                             <p className="fredoka">0</p>

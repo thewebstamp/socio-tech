@@ -1,3 +1,4 @@
+// Comments.jsx
 import { useEffect, useRef, useState } from 'react';
 import { useAuthData } from '../context/authContest.jsx';
 import { useUtilData } from '../context/utilContext.jsx';
@@ -5,9 +6,9 @@ import { X } from 'lucide-react';
 import moment from 'moment';
 import api from './lib/axios.jsx';
 
-export default function Comments({ comments, fetchComment }) {
+export default function Comments({ postId, comments, fetchComment }) { /* CHANGED: accept postId prop */
     const [loading, setLoading] = useState(false);
-    const { user, postId } = useAuthData();
+    const { user } = useAuthData(); /* CHANGED: removed postId from context usage */
     const { setShowComment, handleShowComment } = useUtilData();
 
     //comment pop for small and large screen-------
@@ -15,15 +16,17 @@ export default function Comments({ comments, fetchComment }) {
     const commentContRef = useRef(null);
 
     useEffect(() => {
-        function handleCommentClose(e) {
-            if (!commentRef.current?.contains(e.target)) {
+        // CHANGED: attach listener to document & cleanup properly
+        const handleCommentClose = (e) => {
+            if (commentRef.current && !commentRef.current.contains(e.target)) {
                 setShowComment(false);
                 handleShowComment();
             }
         };
 
-        commentContRef.current.addEventListener("click", handleCommentClose);
-    }, []);
+        document.addEventListener("mousedown", handleCommentClose);
+        return () => document.removeEventListener("mousedown", handleCommentClose);
+    }, [setShowComment, handleShowComment]);
 
     const [content, setContent] = useState("");
 
@@ -35,12 +38,14 @@ export default function Comments({ comments, fetchComment }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!content.trim()) return;
+        if (!postId) return; // CHANGED: guard — require a postId
         setLoading(true);
         try {
             await api.post("/createComment", { content, post_id: postId }, {
                 withCredentials: true
             });
-            await fetchComment();
+            // after creating, refresh comments for this post
+            if (typeof fetchComment === "function") await fetchComment();
             setContent("");
 
         } catch (error) {
@@ -58,8 +63,19 @@ export default function Comments({ comments, fetchComment }) {
                         <X strokeWidth={3} onClick={() => { setShowComment(false); handleShowComment() }} className='cursor-pointer text-red-700 mb-3 mt-3' />
                         <form className='flex flex-nowrap gap-3 [@media(max-width:680px)]:gap-2 items-center' onSubmit={handleSubmit}>
                             <img className='w-[35px] h-[35px] rounded-full object-center object-cover' src={`${user.profile_picture}`} alt="" />
-                            <input className='h-[37px] min-w-0 flex-1 border-2 border-gray-500 px-3 text-[16.5px] [@media(max-width:680px)]:placeholder:text-[16.4px] placeholder-gray-600 dark:placeholder-gray-400 dark:text-gray-100 rounded-md dark:bg-[#2d2d2d]' type="text" placeholder='Make a comment' value={content} onChange={handleChange} />
-                            <button className='flex justify-center items-center h-[35px] fredoka bg-blue-500 font-medium tracking-[0.2px] text-white shadow-lg px-4 [@media(max-width:680px)]:px-3 rounded-md shrink-0' type="submit">
+                            <input
+                              className='h-[37px] min-w-0 flex-1 border-2 border-gray-500 px-3 text-[16.5px] [@media(max-width:680px)]:placeholder:text-[16.4px] placeholder-gray-600 dark:placeholder-gray-400 dark:text-gray-100 rounded-md dark:bg-[#2d2d2d]'
+                              type="text"
+                              placeholder='Make a comment'
+                              value={content}
+                              onChange={handleChange}
+                              disabled={loading}
+                            />
+                            <button
+                              className='flex justify-center items-center h-[35px] fredoka bg-blue-500 font-medium tracking-[0.2px] text-white shadow-lg px-4 [@media(max-width:680px)]:px-3 rounded-md shrink-0'
+                              type="submit"
+                              disabled={loading || !content.trim()}
+                            >
                                 {
                                     loading ? (
                                         <div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -73,8 +89,8 @@ export default function Comments({ comments, fetchComment }) {
 
                     <div className='flex flex-col gap-1 mt-4 px-[15px]'>
                         {
-                            comments.map((c) => (
-                                <div key={c.id}>
+                            (comments || []).map((c) => (
+                                <div key={c.id ?? c.comment_id ?? `${c.created_at}-${c.name}`}>
                                     <div className='flex bg-[#f4f4f47f] dark:bg-[#0f0f0f9d] rounded-xl pt-2 pb-[6px]'>
                                         <img className='flex-none w-[35px] h-[35px] rounded-full object-center object-cover' src={`${c.profile_picture}`} alt="" />
                                         <div className='josefin flex flex-1 flex-col gap-[1px] text-[18.5px] dark:text-[18.8px] ml-4 [@media(max-width:680px)]:ml-3'>

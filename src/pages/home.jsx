@@ -1,3 +1,4 @@
+// Home.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import Posts from "../components/posts.jsx";
@@ -9,7 +10,7 @@ import { useAuthData } from "../context/authContest.jsx";
 
 function Home() {
     const { showComment } = useUtilData();
-    const { postId } = useAuthData();
+    const { postId } = useAuthData(); // keep using context postId as the selected post id
     const navigate = useNavigate();
     useEffect(() => {
         if (!localStorage.getItem("user")) {
@@ -49,10 +50,10 @@ function Home() {
     //Fetch Comment
     const [comments, setComments] = useState([]);
     const fetchComment = async () => {
+        if (!postId) return; // CHANGED: guard
         try {
             const res = await api.get(`/fetchComment/${postId}`);
             setComments(res.data);
-
         } catch (error) {
             console.log(error);
         }
@@ -67,7 +68,8 @@ function Home() {
             <Status status={status} fetchStatus={fetchStatus} fetchPosts={fetchPosts} />
             <Posts post={post} />
             {
-                showComment && <Comments comments={comments} fetchComment={fetchComment} />
+                /* CHANGED: pass postId into Comments so Comments uses the intended post id */
+                showComment && <Comments postId={postId} comments={comments} fetchComment={fetchComment} />
             }
         </div>
     )
