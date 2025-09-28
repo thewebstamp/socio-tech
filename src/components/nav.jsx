@@ -125,11 +125,11 @@ function Nav() {
                     </a>
                     <a href="#" className="relative cursor-pointer" onClick={() => { navigate('/messages') }}>
                         <MessageCircle strokeWidth={2.3} className={`w-[25px] h-[25px] ${isActive('/messages')? "text-[#1e6aa8]" : "text-black dark:text-white"}`} />
-                        <div className="absolute top-[-10px] right-[-10px] w-[20px] h-[20px] font-semibold text-[12.5px] tracking-wide rounded-full flex justify-center items-center bg-[#ec2c2c] fredoka text-white">1</div>
+                        <div className="hidden absolute top-[-10px] right-[-10px] w-[20px] h-[20px] font-semibold text-[12.5px] tracking-wide rounded-full flex justify-center items-center bg-[#ec2c2c] fredoka text-white">1</div>
                     </a>
                     <a href="#" className="relative cursor-pointer" onClick={() => {navigate("/notifications")}}>
                         <Bell strokeWidth={2.3} className={`w-[25px] h-[25px] ${isActive('/notifications')? "text-[#1e6aa8]" : "text-black dark:text-white"}`} />
-                        <div className="absolute top-[-10px] right-[-10px] w-[20px] h-[20px] font-semibold text-[14px] tracking-wide rounded-full flex justify-center items-center bg-[#ec2c2c] fredoka text-white">1</div>
+                        <div className="hidden absolute top-[-10px] right-[-10px] w-[20px] h-[20px] font-semibold text-[14px] tracking-wide rounded-full flex justify-center items-center bg-[#ec2c2c] fredoka text-white">1</div>
                     </a>
                     <div className="relative cursor-pointer" onClick={switschSDash}>
                         <img className="w-[37px] h-[37px] object-cover object-center rounded-full" src={`https://socio-tech-server.onrender.com/uploads/${user.profile_picture}`} alt="Profile Image" />

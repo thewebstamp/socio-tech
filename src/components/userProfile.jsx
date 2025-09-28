@@ -134,7 +134,7 @@ function UserProfile({ id }) {
         <div className='josefin bg-white dark:bg-black mt-2 [@media(max-width:800px)]:mt-[-10px]'>
             <div className='relative'>
                 <div>
-                    <img className='w-full h-[210px] object-cover object-center' src={`https://socio-tech-server.onrender.com/uploads/${userp.cover_photo}`} alt="" />
+                    <img className='w-full h-[210px] object-cover object-center' src={`${userp.cover_photo}`} alt="" />
                     {
                         id == userId &&
                         <>
@@ -156,7 +156,7 @@ function UserProfile({ id }) {
                                 <input className='hidden' type="file" id="changeProfilePicture" onChange={handleSelectPicture} accept='image/^' />
                             </>
                         }
-                        <img className='border-4 border-white dark:border-black rounded-full w-[70px] h-[70px] [@media(max-width:680px)]:w-[55px] [@media(max-width:680px)]:h-[55px] rouned-full object-cover object-center' src={`https://socio-tech-server.onrender.com/uploads/${userp.profile_picture}`} alt="" />
+                        <img className='border-4 border-white dark:border-black rounded-full w-[70px] h-[70px] [@media(max-width:680px)]:w-[55px] [@media(max-width:680px)]:h-[55px] rouned-full object-cover object-center' src={`${userp.profile_picture}`} alt="" />
                         <div className="absolute bottom-[13px] right-[0px] green w-[13px] h-[13px] [@media(max-width:680px)]:w-[10px] [@media(max-width:680px)]:h-[10px] rounded-full"></div>
                     </div>
                 </div>

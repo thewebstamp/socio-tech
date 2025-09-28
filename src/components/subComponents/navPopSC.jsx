@@ -70,7 +70,7 @@ function NavPopSC() {
 
                     <a href="#" onClick={() => { switschSDash(); navigate(`profile/${user.id}`) }} className="flex items-center gap-3 py-2 rounded-2xl text-gray-100 cursor-pointer">
                         <div className='relative'>
-                            <img className="w-[37px] h-[37px] border-[1px] border-gray-500 object-cover object-center rounded-full" src={`https://socio-tech-server.onrender.com/uploads/${user.profile_picture}`} alt="User Image" />
+                            <img className="w-[37px] h-[37px] border-[1px] border-gray-500 object-cover object-center rounded-full" src={`${user.profile_picture}`} alt="User Image" />
                             <div className="absolute bottom-[0] right-[0] green w-[10px] h-[10px] rounded-full"></div>
                         </div>
                         <span className="font-semibold fredoka text-[17.5px] tracking-[1px]">See My Profile</span>

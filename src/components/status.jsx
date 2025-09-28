@@ -313,7 +313,7 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                                 >
                                     <img
                                         className="absolute z-10 w-[30px] h-[30px] border-2 border-blue-400 rounded-full left-3 top-3"
-                                        src={`https://socio-tech-server.onrender.com/uploads/${g.profile_picture}`}
+                                        src={`${g.profile_picture}`}
                                         alt={`${g.name} avatar`}
                                     />
                                     <span className="absolute w-full bottom-2 left-0 pl-2 text-white text-[15.5px] drop-shadow bg-[#00000025] pr-3">
@@ -321,7 +321,7 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                                     </span>
                                     <img
                                         className="w-full h-full object-cover"
-                                        src={`https://socio-tech-server.onrender.com/uploads/${g.items[0].image}`}
+                                        src={`${g.items[0].image}`}
                                         alt={`${g.name} status`}
                                     />
                                     {g.items.length > 1 && (
@@ -341,7 +341,7 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                 showPost
                     ? <CreatePost fetchPosts={fetchPosts} />
                     : <div onClick={() => { setShowPost(true); handleCreatePost() }} className="flex gap-5 [@media(max-width:1000px)]:gap-4 [@media(max-width:685px)]:!gap-2 items-center bg-white dark:bg-black px-3 py-2 rounded-2xl shadow-lg mt-4 [@media(max-width:1000px)]:mt-3 [@media(max-width:1000px)]:!py-[7px] border-[1px] border-gray-300 dark:border-gray-900">
-                        <img className="cursor-pointer w-[42px] h-[42px] [@media(max-width:1000px)]:w-[35px] [@media(max-width:1000px)]:h-[35px] rounded-full" src={`https://socio-tech-server.onrender.com/uploads/${user.profile_picture}`} alt="" />
+                        <img className="cursor-pointer w-[42px] h-[42px] [@media(max-width:1000px)]:w-[35px] [@media(max-width:1000px)]:h-[35px] rounded-full" src={`${user.profile_picture}`} alt="" />
                         <span className="cursor-pointer h-[40px] [@media(max-width:1000px)]:h-[33px] flex flex-1 items-center fredoka pl-5 bg-gray-200 dark:bg-[#2c2c2c] dark:text-gray-300 tracking-[0.2px] text-gray-800 text-[17px] rounded-2xl">Create a Post</span>
                         <ImagesIcon className="cursor-pointer w-[30px] h-[30px] [@media(max-width:1000px)]:w-[25px] [@media(max-width:1000px)]:h-[25px] cyan-color" />
                     </div>
@@ -377,7 +377,7 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                         onTouchEnd={() => setIsPaused(false)}
                     >
                         <img
-                            src={`https://socio-tech-server.onrender.com/uploads/${viewerItems[viewerIndex].image}`}
+                            src={`${viewerItems[viewerIndex].image}`}
                             alt=""
                             className="w-full h-full object-contain rounded-md"
                         />
