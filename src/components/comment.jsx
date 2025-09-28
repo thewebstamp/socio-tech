@@ -34,6 +34,7 @@ export default function Comments({ comments, fetchComment }) {
     // Make comment
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!content.trim()) return;
         setLoading(true);
         try {
             await api.post("/createComment", { content, post_id: postId }, {

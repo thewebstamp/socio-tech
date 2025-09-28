@@ -1,4 +1,3 @@
-// Status.jsx
 import { useEffect, useRef, useState, useMemo } from "react";
 import Images from "../assets/images.js";
 import { PlusCircle, ArrowRight, ArrowLeft, ImagesIcon, X } from "lucide-react";
@@ -27,21 +26,32 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
     const autoplayTimeout = useRef(null);
     const AUTOPLAY_MS = 5000; // changeable
 
+    // --------------------
     // Group statuses by user so each user occupies a single card
+    // --------------------
     const grouped = useMemo(() => {
+        // Defensive: ensure `status` is an array
+        if (!Array.isArray(status)) return [];
+
         const map = new Map();
         status.forEach((s) => {
-            const uid = s.userId;
+            // CHANGED: normalize user id field to avoid `undefined` keys
+            // If backend uses userId, user_id, or nested user object, handle them.
+            const uid = (s.userId ?? s.user_id ?? s.user?.id ?? s.userId)?.toString() ?? 'unknown_user';
+
             if (!map.has(uid)) map.set(uid, []);
             map.get(uid).push(s);
         });
+
         // produce an array with most recent first per user
         return Array.from(map.values()).map((arr) => {
             arr.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            // CHANGED: provide safe fallbacks for name/profile picture keys
+            const first = arr[0] || {};
             return {
-                userId: arr[0].userId,
-                name: arr[0].name,
-                profile_picture: arr[0].profile_picture,
+                userId: (first.userId ?? first.user_id ?? first.user?.id ?? first.userId)?.toString() ?? 'unknown_user',
+                name: first.name ?? first.full_name ?? first.username ?? 'Unknown',
+                profile_picture: first.profile_picture ?? first.avatar ?? Images.welcome,
                 items: arr, // sorted newest -> oldest
             };
         });
@@ -207,22 +217,33 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
         setViewerOpen(true);
         setIsPaused(false);
 
-        // Mark this group's statuses as viewed
+        // CHANGED: use a robust status id extraction so we don't add `undefined` to viewed set
         setViewedStatusIds(prev => {
             const updated = new Set(prev);
-            group.items.forEach(item => updated.add(item.statusId));
+            group.items.forEach(item => {
+                const sid = item.statusId ?? item.id ?? item.status_id ?? null;
+                if (sid !== null && sid !== undefined) updated.add(sid);
+            });
             return updated;
         });
     };
 
     const [viewedStatusIds, setViewedStatusIds] = useState(() => {
-        const saved = localStorage.getItem("viewedStatusIds");
-        return saved ? new Set(JSON.parse(saved)) : new Set();
+        try {
+            const saved = localStorage.getItem("viewedStatusIds");
+            return saved ? new Set(JSON.parse(saved)) : new Set();
+        } catch (err) {
+            return new Set();
+        }
     });
 
     // persist to localStorage on change
     useEffect(() => {
-        localStorage.setItem("viewedStatusIds", JSON.stringify([...viewedStatusIds]));
+        try {
+            localStorage.setItem("viewedStatusIds", JSON.stringify([...viewedStatusIds]));
+        } catch (err) {
+            // ignore localStorage write errors
+        }
     }, [viewedStatusIds]);
 
     // ---------- Render ----------
@@ -304,7 +325,10 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
 
                         {/* Mapped grouped status cards (one card per user) */}
                         {grouped.map((g) => {
-                            const hasUnseen = g.items.some(item => !viewedStatusIds.has(item.statusId));
+                            const hasUnseen = g.items.some(item => {
+                                const sid = item.statusId ?? item.id ?? item.status_id ?? null;
+                                return sid !== null && !viewedStatusIds.has(sid);
+                            });
                             return (
                                 <article
                                     key={g.userId}
@@ -357,7 +381,7 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                     {/* progress bars */}
                     <div className="absolute top-2 left-0 w-full flex space-x-1 px-2">
                         {viewerItems.map((it, i) => (
-                            <div key={it.statusId || i} className="flex-1 bg-gray-600 h-1 rounded overflow-hidden">
+                            <div key={it.statusId || it.id || i} className="flex-1 bg-gray-600 h-1 rounded overflow-hidden">
                                 <div
                                     className="progress-bar-fill bg-white h-1"
                                     style={{

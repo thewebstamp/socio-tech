@@ -86,10 +86,16 @@ export default function SingleMainPost({ p }) {
 
     const handleLikePost = async () => {
         try {
+            setHeart(!heart);
+            setPostLikes(prev =>
+                heart
+                    ? prev.filter(like => like.like_user_id !== user.id) // remove like
+                    : [...prev, { like_user_id: user.id }]               // add like
+            );
             await api.post("/like", { like_post_id: p.id });
-            fetchPostLikes();
         } catch (error) {
             console.log(error);
+            fetchPostLikes();
         }
     };
 
