@@ -35,7 +35,8 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
         const map = new Map();
 
         status.forEach((s) => {
-            const uid = s.userId?.toString(); // ✅ always provided by backend
+            // ✅ FIX: handle both userId and userid (Postgres returns lowercase by default)
+            const uid = s.userId?.toString() || s.userid?.toString();
             if (!uid) return;
 
             if (!map.has(uid)) map.set(uid, []);
@@ -115,7 +116,6 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
     };
 
     // ---------- Viewer modal logic (auto-play / swipe / progress) ----------
-    // close viewer and clear timers
     const closeViewer = () => {
         setViewerOpen(false);
         setViewerItems([]);
@@ -124,7 +124,6 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
         clearTimeout(autoplayTimeout.current);
     };
 
-    // autoplay effect
     useEffect(() => {
         if (!viewerOpen) return;
         clearTimeout(autoplayTimeout.current);
@@ -140,7 +139,6 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
         return () => clearTimeout(autoplayTimeout.current);
     }, [viewerOpen, viewerIndex, isPaused, viewerItems.length]);
 
-    // progress bar animation for current item
     useEffect(() => {
         if (!viewerOpen) return;
 
@@ -148,27 +146,23 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
         bars.forEach((bar, i) => {
             bar.style.transition = "none";
             if (i < viewerIndex) {
-                // already completed
                 bar.style.width = "100%";
             } else if (i === viewerIndex) {
-                // reset then animate
                 bar.style.width = "0%";
                 requestAnimationFrame(() => {
                     bar.style.transition = `width ${AUTOPLAY_MS}ms linear`;
                     bar.style.width = "100%";
                 });
             } else {
-                // upcoming → reset
                 bar.style.width = "0%";
             }
         });
     }, [viewerIndex, viewerOpen, isPaused]);
 
-    // swipe gestures
     const touchStartX = useRef(null);
     const handleTouchStartViewer = (e) => {
         touchStartX.current = e.touches[0].clientX;
-        setIsPaused(true); // pause while touching
+        setIsPaused(true);
     };
     const handleTouchEndViewer = (e) => {
         const start = touchStartX.current;
@@ -178,24 +172,20 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
         }
         const diff = e.changedTouches[0].clientX - start;
         if (diff > 50) {
-            // swipe right -> prev
             setViewerIndex((i) => Math.max(i - 1, 0));
         } else if (diff < -50) {
-            // swipe left -> next
             setViewerIndex((i) => Math.min(i + 1, viewerItems.length - 1));
         }
         touchStartX.current = null;
         setIsPaused(false);
     };
 
-    // prev/next in viewer
     const viewerPrev = () => setViewerIndex((i) => Math.max(i - 1, 0));
     const viewerNext = () => {
         if (viewerIndex < viewerItems.length - 1) setViewerIndex((i) => i + 1);
         else closeViewer();
     };
 
-    // prevent body scroll when an overlay is open
     useEffect(() => {
         if (image.length > 0 || viewerOpen) {
             document.body.style.overflow = "hidden";
@@ -207,14 +197,12 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
         };
     }, [image.length, viewerOpen]);
 
-    // When opening viewer, mark as viewed
     const openViewerForGrp = (group, startIndex = 0) => {
         setViewerItems(group.items);
         setViewerIndex(startIndex);
         setViewerOpen(true);
         setIsPaused(false);
 
-        // CHANGED: use a robust status id extraction so we don't add `undefined` to viewed set
         setViewedStatusIds(prev => {
             const updated = new Set(prev);
             group.items.forEach(item => {
@@ -234,20 +222,15 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
         }
     });
 
-    // persist to localStorage on change
     useEffect(() => {
         try {
             localStorage.setItem("viewedStatusIds", JSON.stringify([...viewedStatusIds]));
-        } catch (err) {
-            // ignore localStorage write errors
-        }
+        } catch (err) {}
     }, [viewedStatusIds]);
 
-    // ---------- Render ----------
     return (
         <section className="w-full max-w-full">
             <div className="relative josefin">
-                {/* Left arrow (overlay) */}
                 {showScrollerArrows && (
                     <button
                         type="button"
@@ -259,7 +242,6 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                     </button>
                 )}
 
-                {/* Right arrow (overlay) */}
                 {showScrollerArrows && (
                     <button
                         type="button"
@@ -271,10 +253,8 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                     </button>
                 )}
 
-                {/* Scroll container */}
                 <div ref={scrollerRef} className="w-full overflow-x-auto scroll-smooth no-scrollbar">
                     <div className="flex gap-3 [@media(max-width:685px)]:gap-2 w-max pt-2">
-                        {/* Add Status card (first item) */}
                         <form onSubmit={handleUploadSubmit}>
                             <input
                                 type="file"
@@ -296,7 +276,6 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                                 </div>
                             </label>
 
-                            {/* Preview modal / share when an image is selected */}
                             {image.length > 0 && (
                                 <div className="flex justify-center items-center fixed z-30 w-full h-screen bg-[#dcdcdcd6] dark:bg-[#323232cd] left-0 top-0">
                                     <div className="josefin relative h-[80%] pb-5 pt-10 w-full max-w-[400px] bg-gray-100 dark:bg-black shadow-xl rounded-lg flex gap-4 flex-col items-center justify-between">
@@ -320,7 +299,6 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                             )}
                         </form>
 
-                        {/* Mapped grouped status cards (one card per user) */}
                         {grouped.map((g) => {
                             const hasUnseen = g.items.some(item => {
                                 const sid = item.statusId ?? item.id ?? item.status_id ?? null;
@@ -357,7 +335,6 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                 </div>
             </div>
 
-            {/* Create Post trigger (kept original) */}
             {
                 showPost
                     ? <CreatePost fetchPosts={fetchPosts} />
@@ -368,14 +345,12 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                     </div>
             }
 
-            {/* Modal viewer */}
             {viewerOpen && viewerItems.length > 0 && (
                 <div
                     className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50"
                     onTouchStart={handleTouchStartViewer}
                     onTouchEnd={handleTouchEndViewer}
                 >
-                    {/* progress bars */}
                     <div className="absolute top-2 left-0 w-full flex space-x-1 px-2">
                         {viewerItems.map((it, i) => (
                             <div key={it.statusId || it.id || i} className="flex-1 bg-gray-600 h-1 rounded overflow-hidden">
@@ -389,7 +364,6 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                         ))}
                     </div>
 
-                    {/* content */}
                     <div
                         className="relative max-w-3xl w-full h-[80%] flex items-center justify-center"
                         onMouseDown={() => setIsPaused(true)}
@@ -404,7 +378,6 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                         />
                     </div>
 
-                    {/* left/right nav (desktop only) */}
                     {viewerItems.length > 1 && (
                         <>
                             {viewerIndex > 0 && (
@@ -420,7 +393,6 @@ export default function Status({ fetchPosts, status = [], fetchStatus }) {
                         </>
                     )}
 
-                    {/* close */}
                     <button onClick={closeViewer} className="absolute top-4 right-4 text-white text-2xl">✕</button>
                 </div>
             )}
